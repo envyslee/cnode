@@ -1,0 +1,84 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="cnode.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:control="clr-namespace:cnode.Control"
+    xmlns:converter="clr-namespace:cnode.Converter"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    x:Name="homepage"
+    Loaded="homepage_Loaded"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <phone:PhoneApplicationPage.Resources>
+        <converter:tap x:Key="tapconvert"></converter:tap>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot 是包含所有页面内容的根网格-->
+    <Grid x:Name="LayoutRoot" Background="White" >
+
+        <phone:Pivot Title="CNode社区" Foreground="Black" Style="{StaticResource SpecialPivotStyle}" SelectionChanged="Pivot_SelectionChanged">
+            <phone:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock FontSize="38" Text="{Binding}" Foreground="Black"></TextBlock>
+                </DataTemplate>
+            </phone:Pivot.HeaderTemplate>
+            <phone:PivotItem Header="最新">
+                <phone:LongListSelector ItemsSource="{Binding BindNewest}">
+                    <phone:LongListSelector.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="4 0 4 12" x:Name="newestgrid" Tap="newestgrid_Tap" Tag="{Binding id}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding title}" Foreground="Black" FontSize="24" Grid.ColumnSpan="2" TextWrapping="Wrap"></TextBlock>
+                                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+                                    <Border CornerRadius="4" Background="#E9ECF1">
+                                        <TextBlock Margin="4 0" Text="{Binding tab,Converter={StaticResource tapconvert}}" Foreground="Black"></TextBlock>
+                                    </Border>
+                                   
+                                    <TextBlock Margin="6 0 0 0" Text="{Binding author.loginname}" Foreground="Gray"></TextBlock>
+                                </StackPanel>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding last_reply_at}" HorizontalAlignment="Right" Foreground="Gray" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
+                                <Border Grid.Row="2" Grid.ColumnSpan="2" Height="2" BorderBrush="Gray" BorderThickness="2" Margin="0 4 0 0"></Border>
+                            </Grid>
+                        </DataTemplate>
+                    </phone:LongListSelector.ItemTemplate>
+
+                </phone:LongListSelector>
+            </phone:PivotItem>
+            <phone:PivotItem Header="分享"></phone:PivotItem>
+            <phone:PivotItem Header="问答"></phone:PivotItem>
+            <phone:PivotItem Header="招聘"></phone:PivotItem>
+        </phone:Pivot>
+
+        <control:Loading x:Name="loadingpage"></control:Loading>
+    </Grid>
+    
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar Opacity="0.8" IsVisible="False">
+            <!--<shell:ApplicationBarIconButton IconUri="/Image/settings.png" Text="设置" Click="ApplicationBarIconButton_Click_1"></shell:ApplicationBarIconButton>-->
+            <shell:ApplicationBarIconButton IconUri="/Image/about.png" Text="关于"></shell:ApplicationBarIconButton>
+            <!--<shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="往期日报" ></shell:ApplicationBarMenuItem>
+                <shell:ApplicationBarMenuItem Text="收藏夹" ></shell:ApplicationBarMenuItem>
+            </shell:ApplicationBar.MenuItems>-->
+
+        </shell:ApplicationBar>
+
+    </phone:PhoneApplicationPage.ApplicationBar>
+</phone:PhoneApplicationPage>
